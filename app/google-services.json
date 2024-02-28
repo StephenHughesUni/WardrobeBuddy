@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "694782111037",
+    "project_id": "finalyearprojectapp-29b81",
+    "storage_bucket": "finalyearprojectapp-29b81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694782111037:android:e847699dcb911776136954",
+        "android_client_info": {
+          "package_name": "com.example.wardrobebuddy.com.firebaseauth"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwb59TKPslzEsH-MPYtM4sXqb89eHRsAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
