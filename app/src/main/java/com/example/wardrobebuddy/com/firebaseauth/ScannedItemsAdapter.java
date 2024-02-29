@@ -34,7 +34,14 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
         holder.sizeTextView.setText(item.getSize());
         holder.priceTextView.setText(item.getPrice());
         holder.articleNumberTextView.setText(item.getArticleNumber());
-        Glide.with(context).load(item.getImageUri()).into(holder.imageView);
+
+        // Use Glide to load the image from the URI
+        // Make sure the imageUri in ScannedItem is stored as a String and converted to Uri here
+        if (item.getImageUri() != null && !item.getImageUri().isEmpty()) {
+            Glide.with(context)
+                    .load(Uri.parse(item.getImageUri())) // Convert the String URI back to Uri
+                    .into(holder.imageView);
+        }
     }
 
 

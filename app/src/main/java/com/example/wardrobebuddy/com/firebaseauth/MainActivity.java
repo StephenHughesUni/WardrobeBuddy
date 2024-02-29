@@ -25,6 +25,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
@@ -40,7 +45,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -77,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
             finish();
+        } else {
+            // Call loadUserItems here to load the data as soon as the user is confirmed to be logged in
+            loadUserItems();
         }
 
         Button btnScanNow = findViewById(R.id.btnScanNow);
@@ -152,21 +162,25 @@ public class MainActivity extends AppCompatActivity {
         if (base64Image != null) {
             new Thread(() -> {
                 OpenAiHelper openAIHelper = new OpenAiHelper();
-                String prompt = "Categorize this label into Size, Price, Article Number";
+                String prompt = "Please categorize the following information from the label and do not include other information:\n" +
+                        "- Size (e.g., S, XS, M, L)\n" +
+                        "- Price (e.g., $39.90)\n" +
+                        "- Article Number (e.g., 2398/028/800)";
                 String response = openAIHelper.getAIResponse(prompt, base64Image);
                 runOnUiThread(() -> {
                     if (response != null && !response.isEmpty()) {
                         // Assuming response format is "Size: S\nPrice: $39.90\nArticle Number: 2398/028/800"
                         // You may need to adjust parsing logic based on actual response format
                         String[] parts = response.split("\n");
-                        String size = parts.length > 0 ? parts[0] : "";
-                        String price = parts.length > 1 ? parts[1] : "";
-                        String articleNumber = parts.length > 2 ? parts[2] : "";
+                        String size = parts.length > 0 ? parts[0].split(": ")[1] : ""; // Adjusted to extract value
+                        String price = parts.length > 1 ? parts[1].split(": ")[1] : ""; // Adjusted to extract value
+                        String articleNumber = parts.length > 2 ? parts[2].split(": ")[1] : ""; // Adjusted to extract value
 
-                        ScannedItem newItem = new ScannedItem(imageUri, size, price, articleNumber);
-                        scannedItems.add(newItem);
-                        adapter.notifyDataSetChanged();
-                        Toast.makeText(MainActivity.this, "Item added to history", Toast.LENGTH_LONG).show();
+                        // Convert Uri to String before passing to ScannedItem constructor
+                        String imageUriString = imageUri.toString();
+                        ScannedItem newItem = new ScannedItem(imageUriString, size, price, articleNumber);
+                        saveItemToRealtimeDatabase(newItem); // Corrected comment to indicate saving to Realtime Database
+                        Toast.makeText(MainActivity.this, "Item added to database", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(MainActivity.this, "Failed to process image", Toast.LENGTH_SHORT).show();
                     }
@@ -176,6 +190,50 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Failed to encode image", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+    private void saveItemToRealtimeDatabase(ScannedItem item) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference ref = database.getReference("users").child(user.getUid()).child("scannedItems");
+
+        // Convert ScannedItem to a map or use a model class that Firebase can serialize directly
+        Map<String, Object> itemMap = new HashMap<>();
+        itemMap.put("size", item.getSize());
+        itemMap.put("price", item.getPrice());
+        itemMap.put("articleNumber", item.getArticleNumber());
+        itemMap.put("imageUri", item.getImageUri().toString());
+
+        // Push creates a unique ID for each new child
+        ref.push().setValue(itemMap)
+                .addOnSuccessListener(aVoid -> Log.d("RealtimeDatabase", "Item saved successfully"))
+                .addOnFailureListener(e -> Log.w("RealtimeDatabase", "Error saving item", e));
+    }
+
+
+    private void loadUserItems() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference ref = database.getReference("users").child(user.getUid()).child("scannedItems");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                scannedItems.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    ScannedItem item = snapshot.getValue(ScannedItem.class); // Make sure ScannedItem has a no-arg constructor and setters
+                    scannedItems.add(item);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("RealtimeDatabase", "loadUserItems:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
+
+
 
     private String convertTextToJson(Text texts) {
         try {
