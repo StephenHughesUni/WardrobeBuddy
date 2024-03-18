@@ -1,36 +1,54 @@
-<!-- item_scanned_item.xml -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:cardPreventCornerOverlap="false">
 
-    <ImageView
-        android:id="@+id/item_image"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"/>
-
-    <!-- Added TextViews for Size, Price, and Article Number -->
-    <TextView
-        android:id="@+id/item_size"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:text="Size"
-        android:textAppearance="?attr/textAppearanceListItem"/>
+        android:padding="8dp">
 
-    <TextView
-        android:id="@+id/item_price"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Price"
-        android:textAppearance="?attr/textAppearanceListItem"/>
+        <!-- ImageView remains unchanged, as per your request -->
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="8dp"/>
 
-    <TextView
-        android:id="@+id/item_article_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Article Number"
-        android:textAppearance="?attr/textAppearanceListItem"/>
-</LinearLayout>
+        <!-- New ImageView for the delete button -->
+        <ImageView
+            android:id="@+id/delete_icon"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/baseline_favorite_border_24"
+            android:contentDescription="@string/delete_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!-- TextView for the scan date -->
+        <TextView
+            android:id="@+id/scan_date_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintStart_toEndOf="@id/item_image"
+            app:layout_constraintTop_toTopOf="@id/item_image"
+            app:layout_constraintBottom_toBottomOf="@id/item_image"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -21,8 +21,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,11 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
-import com.google.mlkit.vision.text.TextRecognition;
-import com.google.mlkit.vision.text.TextRecognizer;
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,11 +36,13 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -162,24 +158,23 @@ public class MainActivity extends AppCompatActivity {
         if (base64Image != null) {
             new Thread(() -> {
                 OpenAiHelper openAIHelper = new OpenAiHelper();
-                String prompt = "Please categorize the following information from the label and do not include other information:\n" +
-                        "- Size (e.g., S, XS, M, L)\n" +
-                        "- Price (e.g., $39.90)\n" +
-                        "- Article Number (e.g., 2398/028/800)";
+                String prompt = "Please extract/categorize and list only the following details from the label, ignoring all other information. :\n" +
+                        "- Size (MAKE SURE TO CHECK for the one in bold, larger print or a box around it, ONLY provide one size do not list multiple sizes  e.g., 'Size: 28' or 'Size: M' or 'One-Size')\n" +
+                        "- Price (if there is a sale, list the original price followed by the sale price in parentheses, e.g., 'Price: 22.99 (10.00 Sale)'). If no sale, just list the current price. Please prioritize euro.\n" +
+                        "- Article Number (Please first try to check if you can see if its a popular brand to check the Article Number templating from that Brand for example H&M., 'Article Number: 1939/1 75 248179'). and Zara 'Article Number: 2398/028/800'.";
                 String response = openAIHelper.getAIResponse(prompt, base64Image);
                 runOnUiThread(() -> {
                     if (response != null && !response.isEmpty()) {
-                        // Assuming response format is "Size: S\nPrice: $39.90\nArticle Number: 2398/028/800"
-                        // You may need to adjust parsing logic based on actual response format
+                        // Assuming response format is parsed correctly
                         String[] parts = response.split("\n");
-                        String size = parts.length > 0 ? parts[0].split(": ")[1] : ""; // Adjusted to extract value
-                        String price = parts.length > 1 ? parts[1].split(": ")[1] : ""; // Adjusted to extract value
-                        String articleNumber = parts.length > 2 ? parts[2].split(": ")[1] : ""; // Adjusted to extract value
+                        String size = parts.length > 0 ? parts[0].split(": ")[1] : "";
+                        String price = parts.length > 1 ? parts[1].split(": ")[1] : "";
+                        String articleNumber = parts.length > 2 ? parts[2].split(": ")[1] : "";
+                        String currentDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
-                        // Convert Uri to String before passing to ScannedItem constructor
                         String imageUriString = imageUri.toString();
-                        ScannedItem newItem = new ScannedItem(imageUriString, size, price, articleNumber);
-                        saveItemToRealtimeDatabase(newItem); // Corrected comment to indicate saving to Realtime Database
+                        ScannedItem newItem = new ScannedItem(imageUriString, size, price, articleNumber, currentDateTime);
+                        saveItemToRealtimeDatabase(newItem);
                         Toast.makeText(MainActivity.this, "Item added to database", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(MainActivity.this, "Failed to process image", Toast.LENGTH_SHORT).show();
@@ -192,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     private void saveItemToRealtimeDatabase(ScannedItem item) {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference ref = database.getReference("users").child(user.getUid()).child("scannedItems");
@@ -202,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
         itemMap.put("price", item.getPrice());
         itemMap.put("articleNumber", item.getArticleNumber());
         itemMap.put("imageUri", item.getImageUri().toString());
+        itemMap.put("dateTimeScanned", item.getDateTimeScanned()); // This line should add the dateTimeScanned
 
         // Push creates a unique ID for each new child
         ref.push().setValue(itemMap)

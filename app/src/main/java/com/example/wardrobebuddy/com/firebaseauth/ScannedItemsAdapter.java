@@ -2,12 +2,14 @@ package com.example.wardrobebuddy.com.firebaseauth;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import java.util.List;
@@ -15,6 +17,11 @@ import java.util.List;
 public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapter.ViewHolder> {
     private List<ScannedItem> scannedItems;
     private Context context;
+    private OnItemDeleteClickListener deleteClickListener;
+
+    public interface OnItemDeleteClickListener {
+        void onItemDeleteClick(int position);
+    }
 
     public ScannedItemsAdapter(Context context, List<ScannedItem> scannedItems) {
         this.context = context;
@@ -31,37 +38,57 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ScannedItem item = scannedItems.get(position);
-        holder.sizeTextView.setText(item.getSize());
-        holder.priceTextView.setText(item.getPrice());
-        holder.articleNumberTextView.setText(item.getArticleNumber());
 
-        // Use Glide to load the image from the URI
-        // Make sure the imageUri in ScannedItem is stored as a String and converted to Uri here
-        if (item.getImageUri() != null && !item.getImageUri().isEmpty()) {
-            Glide.with(context)
-                    .load(Uri.parse(item.getImageUri())) // Convert the String URI back to Uri
-                    .into(holder.imageView);
-        }
+        // Load the image using Glide
+        Glide.with(context).load(Uri.parse(item.getImageUri())).into(holder.imageView);
+
+        // Set the scan date
+        holder.scanDateTextView.setText(item.getDateTimeScanned());
+
+        // Add a log to check the date being set
+        Log.d("ScannedItemsAdapter", "Setting date for item at position " + position + ": " + item.getDateTimeScanned());
+
+
+        // Set up click listener to show details in a dialog
+        holder.itemView.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Item Details")
+                    .setMessage("Size: " + item.getSize() + "\nPrice: " + item.getPrice() + "\nArticle Number: " + item.getArticleNumber())
+                    .setPositiveButton("OK", null)
+                    .show();
+        });
+
+        // Set up click listener for delete icon
+        holder.deleteIcon.setOnClickListener(view -> {
+            if (deleteClickListener != null) {
+                deleteClickListener.onItemDeleteClick(position);
+            }
+        });
     }
-
 
     @Override
     public int getItemCount() {
         return scannedItems.size();
     }
 
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView sizeTextView, priceTextView, articleNumberTextView;
+        ImageView deleteIcon;
+        TextView scanDateTextView; // TextView for the scan date
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.item_image);
-            sizeTextView = itemView.findViewById(R.id.item_size); // Ensure you have this ID in your layout
-            priceTextView = itemView.findViewById(R.id.item_price); // Ensure you have this ID in your layout
-            articleNumberTextView = itemView.findViewById(R.id.item_article_number); // Ensure this too
+            deleteIcon = itemView.findViewById(R.id.delete_icon);
+            scanDateTextView = itemView.findViewById(R.id.scan_date_text_view); // Make sure you add this to your layout
         }
     }
 
+    public void setOnItemDeleteClickListener(OnItemDeleteClickListener listener) {
+        this.deleteClickListener = listener;
+    }
+
+    public List<ScannedItem> getScannedItems() {
+        return scannedItems;
+    }
 }

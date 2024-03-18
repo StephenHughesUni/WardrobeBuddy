@@ -22,25 +22,70 @@
 
     <Button
         android:id="@+id/btnScanNow"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Scan now"
-        android:layout_gravity="center_horizontal"/>
+        android:text="Scan Now"
+        android:background="@drawable/rounded_button"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textAllCaps="false"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"/>
+
 
     <Button
         android:id="@+id/btnOutfitCollection"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Outfit Collection"
-        android:layout_gravity="center_horizontal"/>
+        android:text="My Outfits"
+        android:background="@drawable/rounded_button_outline"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textAllCaps="false"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:padding="16dp" />
 
     <Button
         android:id="@+id/btnFavourites"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Favourites"
-        android:layout_marginBottom="16dp"
-        android:layout_gravity="center_horizontal"/>
+        android:background="@drawable/rounded_button_outline"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textAllCaps="false"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/tvScanHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="start"
+        android:padding="3dp"
+        android:text="Scan History"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

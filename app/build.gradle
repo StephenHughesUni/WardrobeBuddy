@@ -38,6 +38,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.10.0' // Check and use the correct version
     implementation 'com.google.mlkit:text-recognition:16.0.0'
 
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
     // Add the Firebase SDK for Google Analytics
     implementation 'com.google.firebase:firebase-analytics:21.5.1'
     // Add the Firebase SDK for Firebase Realtime Database
