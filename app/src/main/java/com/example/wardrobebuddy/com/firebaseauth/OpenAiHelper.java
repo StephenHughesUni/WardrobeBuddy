@@ -62,7 +62,8 @@ public class OpenAiHelper {
                     String[] lines = content.split("\n");
                     StringBuilder extractedInfo = new StringBuilder();
                     for (String line : lines) {
-                        if (line.contains("Size:") || line.contains("Price:") || line.contains("Article Number:")) {
+                        // Now also checking for "Brand:" in addition to the other fields
+                        if (line.contains("Brand:") || line.contains("Size:") || line.contains("Price:") || line.contains("Article Number:")) {
                             extractedInfo.append(line).append("\n");
                         }
                     }

@@ -159,21 +159,36 @@ public class MainActivity extends AppCompatActivity {
             new Thread(() -> {
                 OpenAiHelper openAIHelper = new OpenAiHelper();
                 String prompt = "Please extract/categorize and list only the following details from the label, ignoring all other information. :\n" +
+                        "- Brand (Look for anything that might display its from a brand like a logo or other details, e.g., 'Brand: Zara' or 'Brand: H&M)\n" +
                         "- Size (MAKE SURE TO CHECK for the one in bold, larger print or a box around it, ONLY provide one size do not list multiple sizes  e.g., 'Size: 28' or 'Size: M' or 'One-Size')\n" +
                         "- Price (if there is a sale, list the original price followed by the sale price in parentheses, e.g., 'Price: 22.99 (10.00 Sale)'). If no sale, just list the current price. Please prioritize euro.\n" +
-                        "- Article Number (Please first try to check if you can see if its a popular brand to check the Article Number templating from that Brand for example H&M., 'Article Number: 1939/1 75 248179'). and Zara 'Article Number: 2398/028/800'.";
+                        "- Article Number (Please first check the brand found then follow the structure of that brands article number templating from that Brand for example H&M., 'Article Number: 1939/1 75 248179'). and Zara 'Article Number: 2398/028/800'.";
+
                 String response = openAIHelper.getAIResponse(prompt, base64Image);
                 runOnUiThread(() -> {
                     if (response != null && !response.isEmpty()) {
-                        // Assuming response format is parsed correctly
+                        // Split by line breaks to get each part of the response
                         String[] parts = response.split("\n");
-                        String size = parts.length > 0 ? parts[0].split(": ")[1] : "";
-                        String price = parts.length > 1 ? parts[1].split(": ")[1] : "";
-                        String articleNumber = parts.length > 2 ? parts[2].split(": ")[1] : "";
-                        String currentDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
+                        // Temporary variables to hold each part
+                        String brand = "", size = "", price = "", articleNumber = "";
+
+                        // Iterate through each part to assign the values correctly based on a known identifier
+                        for (String part : parts) {
+                            if (part.startsWith("Brand:")) {
+                                brand = part.split(":")[1].trim(); // Adjusted to trim whitespace
+                            } else if (part.startsWith("Size:")) {
+                                size = part.split(":")[1].trim();
+                            } else if (part.startsWith("Price:")) {
+                                price = part.split(":")[1].trim();
+                            } else if (part.startsWith("Article Number:")) {
+                                articleNumber = part.split(":")[1].trim();
+                            }
+                        }
+
+                        String currentDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
                         String imageUriString = imageUri.toString();
-                        ScannedItem newItem = new ScannedItem(imageUriString, size, price, articleNumber, currentDateTime);
+                        ScannedItem newItem = new ScannedItem(imageUriString, brand, size, price, articleNumber, currentDateTime);
                         saveItemToRealtimeDatabase(newItem);
                         Toast.makeText(MainActivity.this, "Item added to database", Toast.LENGTH_LONG).show();
                     } else {
@@ -199,6 +214,8 @@ public class MainActivity extends AppCompatActivity {
         itemMap.put("articleNumber", item.getArticleNumber());
         itemMap.put("imageUri", item.getImageUri().toString());
         itemMap.put("dateTimeScanned", item.getDateTimeScanned()); // This line should add the dateTimeScanned
+        itemMap.put("brand", item.getBrand()); // Add this line to include the brand
+
 
         // Push creates a unique ID for each new child
         ref.push().setValue(itemMap)

@@ -37,6 +37,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <TextView
+            android:id="@+id/textView_brand"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Brand Name"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintStart_toStartOf="@+id/scan_date_text_view"
+            app:layout_constraintEnd_toEndOf="@+id/scan_date_text_view"
+            app:layout_constraintTop_toTopOf="@+id/item_image"
+            app:layout_constraintBottom_toTopOf="@+id/scan_date_text_view"
+            android:layout_marginBottom="8dp"/>
+
         <!-- TextView for the scan date -->
         <TextView
             android:id="@+id/scan_date_text_view"

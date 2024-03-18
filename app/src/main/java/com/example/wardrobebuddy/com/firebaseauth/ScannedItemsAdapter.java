@@ -42,6 +42,9 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
         // Load the image using Glide
         Glide.with(context).load(Uri.parse(item.getImageUri())).into(holder.imageView);
 
+        // Set the brand name
+        holder.brandTextView.setText(item.getBrand()); // Set the brand text
+
         // Set the scan date
         holder.scanDateTextView.setText(item.getDateTimeScanned());
 
@@ -74,13 +77,15 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         ImageView deleteIcon;
+        TextView brandTextView; // TextView for the brand
         TextView scanDateTextView; // TextView for the scan date
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.item_image);
             deleteIcon = itemView.findViewById(R.id.delete_icon);
-            scanDateTextView = itemView.findViewById(R.id.scan_date_text_view); // Make sure you add this to your layout
+            brandTextView = itemView.findViewById(R.id.textView_brand); // Initialize the brand TextView
+            scanDateTextView = itemView.findViewById(R.id.scan_date_text_view);
         }
     }
 

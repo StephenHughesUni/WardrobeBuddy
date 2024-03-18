@@ -4,6 +4,8 @@ public class ScannedItem {
     private String imageUri; // Change this field to String
     private String size;
     private String price;
+
+    private String brand; // Field to store the brand name
     private String articleNumber;
 
     private String dateTimeScanned; // Field to store the scan date/time
@@ -13,8 +15,9 @@ public class ScannedItem {
     }
 
     // Constructor
-    public ScannedItem(String imageUri, String size, String price, String articleNumber, String dateTimeScanned) {
+    public ScannedItem(String imageUri, String brand, String size, String price, String articleNumber, String dateTimeScanned) {
         this.imageUri = imageUri;
+        this.brand = brand;
         this.size = size;
         this.price = price;
         this.articleNumber = articleNumber;
@@ -60,5 +63,14 @@ public class ScannedItem {
 
     public void setDateTimeScanned(String dateTimeScanned) {
         this.dateTimeScanned = dateTimeScanned;
+    }
+
+    // Getter and setter for the brand
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 }
