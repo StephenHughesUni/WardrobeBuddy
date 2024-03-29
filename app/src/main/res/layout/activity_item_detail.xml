@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ImageView
+        android:id="@+id/image_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@color/gray"
+        app:layout_anchor="@id/appbar"
+        app:layout_anchorGravity="bottom" />
+
+    <!-- Details Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_marginTop="200dp"
+        app:layout_anchor="@id/appbar">
+
+        <!-- These IDs should match the IDs used in the ItemDetailActivity -->
+        <TextView
+            android:id="@+id/detail_brand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Brand placeholder"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingTop="8dp" />
+
+        <TextView
+            android:id="@+id/detail_articleNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Article number placeholder"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingTop="8dp" />
+
+        <TextView
+            android:id="@+id/detail_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price placeholder"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingTop="8dp" />
+
+        <TextView
+            android:id="@+id/detail_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Size placeholder"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingTop="8dp" />
+
+        <TextView
+            android:id="@+id/detail_dateTimeScanned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date time scanned placeholder"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingTop="8dp" />
+
+        <Button
+            android:id="@+id/button_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Link to item on brand website"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@android:color/white"
+            android:paddingTop="16dp"
+            android:layout_marginTop="16dp" />
+
+        <Button
+            android:id="@+id/button_build_outfit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Build an Outfit"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@android:color/white"
+            android:paddingTop="16dp"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/baseline_favorite_border_24"
+        app:tint="@android:color/white"
+        android:layout_gravity="end|bottom" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

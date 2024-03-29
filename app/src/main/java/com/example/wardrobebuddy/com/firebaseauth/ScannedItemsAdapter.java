@@ -49,19 +49,27 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
 
         // Click listener for the view that shows item details and offers an option to view online
         holder.itemView.setOnClickListener(view -> {
-            // AlertDialog to show details
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("Item Details")
                     .setMessage("Brand: " + item.getBrand() + "\nSize: " + item.getSize() + "\nPrice: " + item.getPrice() + "\nArticle Number: " + item.getArticleNumber())
                     .setPositiveButton("OK", null)
                     .setNegativeButton("View Online", (dialog, which) -> {
-                        // Use UrlBuilder to get the URL for viewing online
                         String url = UrlBuilder.getUrl(item.getBrand(), item.getArticleNumber());
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         context.startActivity(browserIntent);
                     })
+                    .setNeutralButton("More Info", (dialog, which) -> {
+                        Intent detailIntent = new Intent(context, ItemDetailActivity.class);
+                        detailIntent.putExtra("brand", item.getBrand());
+                        detailIntent.putExtra("size", item.getSize());
+                        detailIntent.putExtra("price", item.getPrice());
+                        detailIntent.putExtra("articleNumber", item.getArticleNumber());
+                        detailIntent.putExtra("dateTimeScanned", item.getDateTimeScanned());
+                        context.startActivity(detailIntent);
+                    })
                     .show();
         });
+
 
         // Set up click listener for delete icon
         holder.deleteIcon.setOnClickListener(view -> {
