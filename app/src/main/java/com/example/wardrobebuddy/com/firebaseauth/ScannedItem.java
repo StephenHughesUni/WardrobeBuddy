@@ -10,18 +10,22 @@ public class ScannedItem {
 
     private String dateTimeScanned; // Field to store the scan date/time
 
+    private String category; // New field for category
+
     // No-argument constructor required for Firebase
     public ScannedItem() {
     }
 
     // Constructor
-    public ScannedItem(String imageUri, String brand, String size, String price, String articleNumber, String dateTimeScanned) {
+    public ScannedItem(String imageUri, String brand, String size, String price, String articleNumber, String dateTimeScanned, String category) {
         this.imageUri = imageUri;
         this.brand = brand;
         this.size = size;
         this.price = price;
         this.articleNumber = articleNumber;
         this.dateTimeScanned = dateTimeScanned;
+        this.category = category;
+
     }
 
     // Getters and setters
@@ -73,4 +77,8 @@ public class ScannedItem {
     public void setBrand(String brand) {
         this.brand = brand;
     }
+
+    public String getCategory() { return category; }
+
+    public void setCategory(String category) { this.category = category; }
 }

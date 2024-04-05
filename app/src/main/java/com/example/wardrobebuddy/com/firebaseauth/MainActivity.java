@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private ScannedItemsAdapter adapter;
     private List<ScannedItem> scannedItems;
 
+    private String selectedCategory;
+
     // Request codes for camera permission and capturing an image (commented for future use)
     // private static final int REQUEST_CAMERA_PERMISSION = 201;
     // private static final int REQUEST_IMAGE_CAPTURE = 102;
@@ -104,7 +106,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setItems(categories, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String selectedCategory = categories[which];
+                // Assign the selected category to the selectedCategory variable
+                selectedCategory = categories[which];
                 openGallery(selectedCategory);
             }
         });
@@ -207,8 +210,8 @@ public class MainActivity extends AppCompatActivity {
 
                         String currentDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
                         String imageUriString = imageUri.toString();
-                        ScannedItem newItem = new ScannedItem(imageUriString, brand, size, price, articleNumber, currentDateTime);
-                        saveItemToRealtimeDatabase(newItem);
+                        ScannedItem newItem = new ScannedItem(imageUriString, brand, size, price, articleNumber, currentDateTime, selectedCategory);
+                        saveItemToRealtimeDatabase(newItem, selectedCategory);
                         Toast.makeText(MainActivity.this, "Item added to database", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(MainActivity.this, "Failed to process image", Toast.LENGTH_SHORT).show();
@@ -222,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void saveItemToRealtimeDatabase(ScannedItem item) {
+    private void saveItemToRealtimeDatabase(ScannedItem item, String category) {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference ref = database.getReference("users").child(user.getUid()).child("scannedItems");
 
@@ -234,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
         itemMap.put("imageUri", item.getImageUri().toString());
         itemMap.put("dateTimeScanned", item.getDateTimeScanned()); // This line should add the dateTimeScanned
         itemMap.put("brand", item.getBrand()); // Add this line to include the brand
+        itemMap.put("category", category); // Add the category to the map
 
 
         // Push creates a unique ID for each new child
