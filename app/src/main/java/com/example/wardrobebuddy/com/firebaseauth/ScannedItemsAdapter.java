@@ -65,6 +65,10 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
                         detailIntent.putExtra("price", item.getPrice());
                         detailIntent.putExtra("articleNumber", item.getArticleNumber());
                         detailIntent.putExtra("dateTimeScanned", item.getDateTimeScanned());
+                        // Use UrlBuilder to dynamically generate the product URL
+                        String productUrl = UrlBuilder.getUrl(item.getBrand(), item.getArticleNumber());
+                        detailIntent.putExtra("productUrl", productUrl); // Pass the dynamically generated URL
+
                         context.startActivity(detailIntent);
                     })
                     .show();

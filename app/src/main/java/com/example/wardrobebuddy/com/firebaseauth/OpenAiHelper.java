@@ -20,6 +20,7 @@ public class OpenAiHelper {
 
     private final OkHttpClient client = new OkHttpClient();
 
+
     public String getAIResponse(String prompt, String base64Image) {
         try {
             JSONObject jsonObject = new JSONObject();

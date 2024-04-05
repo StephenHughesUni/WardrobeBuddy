@@ -1,6 +1,7 @@
 package com.example.wardrobebuddy.com.firebaseauth;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -89,12 +91,29 @@ public class MainActivity extends AppCompatActivity {
         btnScanNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openGallery();
+                showCategorySelectionDialog();
             }
         });
     }
 
-    private void openGallery() {
+    private void showCategorySelectionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Category");
+
+        String[] categories = {"Men", "Women", "Kids"};
+        builder.setItems(categories, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String selectedCategory = categories[which];
+                openGallery(selectedCategory);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void openGallery(String category) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
@@ -158,11 +177,11 @@ public class MainActivity extends AppCompatActivity {
         if (base64Image != null) {
             new Thread(() -> {
                 OpenAiHelper openAIHelper = new OpenAiHelper();
-                String prompt = "Please extract/categorize and list only the following details from the label, ignoring all other information. :\n" +
-                        "- Brand (Look for anything that might display its from a brand like a logo or other details, e.g., 'Brand: Zara' or 'Brand: H&M)\n" +
+                String prompt = "Please extract/categorize and list only the following details from the label, ignoring all other information. Please return it in order of Brand, Size, Price, Article Number. :\n" +
                         "- Size (MAKE SURE TO CHECK for the one in bold, larger print or a box around it, ONLY provide one size do not list multiple sizes  e.g., 'Size: 28' or 'Size: M' or 'One-Size')\n" +
                         "- Price (if there is a sale, list the original price followed by the sale price in parentheses, e.g., 'Price: 22.99 (10.00 Sale)'). If no sale, just list the current price. Please prioritize euro.\n" +
-                        "- Article Number (Please first check the brand found then follow the structure of that brands article number templating from that Brand for example H&M., 'Article Number: 1939/1 75 248179'). and Zara 'Article Number: 2398/028/800'.";
+                        "- Article Number (Please first check the brand found then follow the structure of that brands article number templating from that Brand for example H&M., 'Article Number: 1939/1 75 248179'). and Zara 'Article Number: 2398/028/800'\n" +
+                        "- Brand (Use the article code to figure out the brand as each brand has its own pattern for article numbers. Check for logos or other similar patterns on it too, to check brand.  e.g., 'Brand: Zara' or 'Brand: H&M)";
 
                 String response = openAIHelper.getAIResponse(prompt, base64Image);
                 runOnUiThread(() -> {
