@@ -71,7 +71,7 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         // Fetch product information
         if (productUrl != null && !productUrl.isEmpty()) {
-            fetchProductInfo(productUrl);
+            fetchProductInfo(productUrl, brand);
         } else {
             Log.e("ItemDetailActivity", "Product URL is missing or not provided.");
         }
@@ -113,8 +113,8 @@ public class ItemDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchProductInfo(String productUrl) {
-        apiService.fetchProductInfo(productUrl).enqueue(new Callback<ProductInfoResponse>() {
+    private void fetchProductInfo(String productUrl, String brand) {
+        apiService.fetchProductInfo(productUrl, brand).enqueue(new Callback<ProductInfoResponse>() {
             @Override
             public void onResponse(Call<ProductInfoResponse> call, Response<ProductInfoResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

@@ -180,12 +180,14 @@ public class MainActivity extends AppCompatActivity {
         if (base64Image != null) {
             new Thread(() -> {
                 OpenAiHelper openAIHelper = new OpenAiHelper();
-                String prompt = "Please extract/categorize and list only the following details from the label, ignoring all other information. Please return it in order of Brand, Size, Price, Article Number. :\n" +
-                        "- Size (MAKE SURE TO CHECK for the one in bold, larger print or a box around it, ONLY provide one size do not list multiple sizes  e.g., 'Size: 28' or 'Size: M' or 'One-Size')\n" +
-                        "- Price (if there is a sale, list the original price followed by the sale price in parentheses, e.g., 'Price: 22.99 (10.00 Sale)'). If no sale, just list the current price. Please prioritize euro.\n" +
-                        "- Article Number (Please first check the brand found then follow the structure of that brands article number templating from that Brand for example H&M., 'Article Number: 1939/1 75 248179'). and Zara 'Article Number: 2398/028/800'\n" +
-                        "- Brand (Use the article code to figure out the brand as each brand has its own pattern for article numbers. Check for logos or other similar patterns on it too, to check brand.  e.g., 'Brand: Zara' or 'Brand: H&M)";
-
+                String prompt = "Analyze the clothing label image and identify the specific details listed below. The extracted information must be presented in the exact order and format as follows: 'Brand: [brand]', 'Size: [size]', 'Price: [price] EUR', 'Article Number: [article number]'. Use these guidelines very strictly:\n" +
+                        "First please search for popular clothing tags online even if its old content and examine any information on the structure of them such as COS, ZARA, H&M. Example being GB will be on H&M labels while DX is on COS labels. COS usually also contains COS.com on the label sideways"+
+                        "- Size: Determine the size that is prominently displayed on the label, which could be in bold, larger print, or within a box. Provide only this size.\n" +
+                        "- Price: Locate the price in euros. Absent a clear indication of a sale, such as a sale sticker or strikethrough, list only the current euro price.\n" +
+                        "- Article Number: Different brands have unique article number formats. For H&M, this is '1234567 003' which is 7 numbers a space and three colour code numbers '1234567 001', strictly only 7 digits then space then three digits. For Zara, it looks like '2398/028/800', with 4 digits a / then 3 digits / then 3 more digits for colour code in total 10 digits. Use these formats to identify the article number also remember the structure of each to determine the brand.\n" +
+                        "- Brand: Based on the article number format and any visible logos or distinctive features of the label design, determine the brand. As we know H&M does not use slashes while Zara does\n" +
+                        "The response must only contain these four pieces of information in the structure provided, ignoring all other data on the label, such as additional currencies or non-relevant numbers." +
+                        "Only provide article number with 10 digits never more. Never more. Never more. Only 10. Stop giving me more than 10 digits. Zara will only contain slash's in its article code so if the item does not have slashes it wont be Zara";
                 String response = openAIHelper.getAIResponse(prompt, base64Image);
                 runOnUiThread(() -> {
                     if (response != null && !response.isEmpty()) {

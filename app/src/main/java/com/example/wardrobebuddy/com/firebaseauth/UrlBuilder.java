@@ -11,7 +11,10 @@ public class UrlBuilder {
                 return constructZaraUrl(encodedArticleNumber, category);
             case "h&m":
                 // Construct the URL for H&M without considering category
-                return "https://www2.hm.com/en_gb/search-results.html?q=" + encodedArticleNumber;
+                return "https://www2.hm.com/en_ie/search-results.html?q=" + encodedArticleNumber;
+            case "cos":
+                // Construct the URL for COS without considering category
+                return "https://www.cos.com/en_eur/search.html?q=" + encodedArticleNumber;
             // Add more cases for different brands here
             default:
                 // Fallback URL (could be a search engine)
