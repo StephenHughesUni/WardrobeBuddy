@@ -17,7 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -36,6 +45,9 @@ public class ItemDetailActivity extends AppCompatActivity {
     private Map<String, Boolean> sizeAvailabilityMap; // Store fetched product information
     private List<LocationInfo> locationInfoList; // Store fetched location information
 
+    private FirebaseAuth auth;
+    private FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +61,7 @@ public class ItemDetailActivity extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://16.171.44.250:80")
+                .baseUrl("http://10.0.2.2:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
@@ -71,7 +83,8 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         // Fetch product information
         if (productUrl != null && !productUrl.isEmpty()) {
-            fetchProductInfo(productUrl, brand);
+            fetchProductInfo(productUrl, brand, articleNumber);
+
         } else {
             Log.e("ItemDetailActivity", "Product URL is missing or not provided.");
         }
@@ -113,49 +126,112 @@ public class ItemDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchProductInfo(String productUrl, String brand) {
-        apiService.fetchProductInfo(productUrl, brand).enqueue(new Callback<ProductInfoResponse>() {
-            @Override
-            public void onResponse(Call<ProductInfoResponse> call, Response<ProductInfoResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    ProductInfoResponse productInfoResponse = response.body();
-                    Log.d("ItemDetailActivity", "API call successful. Fetched Product Info: " + productInfoResponse);
+    private void fetchProductInfo(String productUrl, String brand, String articleNumber) {
+        // Check if the product information exists in Firebase
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app");
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        DatabaseReference ref = database.getReference("users").child(user.getUid()).child("productInfo").child(articleNumber);
 
-                    // Store available sizes and location information from the response
-                    if (productInfoResponse.getProductInfo() != null) {
-                        sizeAvailabilityMap = productInfoResponse.getProductInfo().getSizeAvailability();
-                        locationInfoList = productInfoResponse.getProductInfo().getLocationInfo();
-                        // Load and display the image
-                        String imageUrl = productInfoResponse.getProductInfo().getImageUrl();
-                        if (imageUrl != null && !imageUrl.isEmpty()) {
-                            ImageView imageView = findViewById(R.id.image_placeholder);
-                            RequestOptions requestOptions = new RequestOptions()
-                                    .placeholder(R.color.gray) // Placeholder while loading
-                                    .error(R.color.gray) // Placeholder if loading fails
-                                    .diskCacheStrategy(DiskCacheStrategy.ALL); // Cache image
-                            Glide.with(ItemDetailActivity.this)
-                                    .load(imageUrl)
-                                    .apply(requestOptions)
-                                    .into(imageView);
-                            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE); // Center the image
-                            imageView.setAdjustViewBounds(true); // Adjust bounds to maintain aspect ratio
-                            imageView.setPadding(16, 16, 16, 16); // Add padding around the image
-                        } else {
-                            Log.e("ItemDetailActivity", "Image URL is null or empty.");
-                        }
-                    } else {
-                        Log.e("ItemDetailActivity", "Product info is null in the response.");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Product information already exists in the database, retrieve it
+                    Map<String, Object> productInfoMap = (Map<String, Object>) dataSnapshot.getValue();
+                    sizeAvailabilityMap = (Map<String, Boolean>) productInfoMap.get("sizeAvailability");
+                    locationInfoList = new ArrayList<>();
+
+                    // Convert Firebase data to LocationInfo objects
+                    for (DataSnapshot snapshot : dataSnapshot.child("locationInfo").getChildren()) {
+                        LocationInfo locationInfo = snapshot.getValue(LocationInfo.class);
+                        locationInfoList.add(locationInfo);
                     }
+
+                    // Load and set the image
+                    String imageUrl = (String) productInfoMap.get("imageUrl");
+                    loadAndSetImage(imageUrl);
+                    displayAvailableSizes();
                 } else {
-                    Log.e("ItemDetailActivity", "API call successful but response parsing failed.");
+                    // Product information does not exist in the database, make API call to fetch it
+                    apiService.fetchProductInfo(productUrl, brand).enqueue(new Callback<ProductInfoResponse>() {
+                        @Override
+                        public void onResponse(Call<ProductInfoResponse> call, Response<ProductInfoResponse> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                ProductInfoResponse productInfoResponse = response.body();
+                                Log.d("ItemDetailActivity", "API call successful. Fetched Product Info: " + productInfoResponse);
+
+                                if (productInfoResponse.getProductInfo() != null) {
+                                    sizeAvailabilityMap = productInfoResponse.getProductInfo().getSizeAvailability();
+                                    locationInfoList = productInfoResponse.getProductInfo().getLocationInfo();
+
+                                    // Store fetched product information in Firebase
+                                    DatabaseReference newRef = ref; // Use the existing reference
+                                    HashMap<String, Object> productInfoMap = new HashMap<>();
+                                    productInfoMap.put("sizeAvailability", sizeAvailabilityMap);
+                                    productInfoMap.put("imageUrl", productInfoResponse.getProductInfo().getImageUrl());
+
+                                    // Convert LocationInfo objects to HashMap for Firebase storage
+                                    List<Map<String, String>> locationMapList = new ArrayList<>();
+                                    for (LocationInfo locationInfo : locationInfoList) {
+                                        Map<String, String> locationMap = new HashMap<>();
+                                        locationMap.put("area", locationInfo.getArea());
+                                        locationMap.put("title", locationInfo.getTitle());
+                                        locationMap.put("message", locationInfo.getMessage());
+                                        locationMapList.add(locationMap);
+                                    }
+                                    productInfoMap.put("locationInfo", locationMapList);
+
+                                    newRef.setValue(productInfoMap)
+                                            .addOnSuccessListener(aVoid -> Log.d("Firebase", "Product info saved successfully."))
+                                            .addOnFailureListener(e -> Log.e("Firebase", "Failed to save product info.", e));
+
+                                    // Load and set the image
+                                    loadAndSetImage(productInfoResponse.getProductInfo().getImageUrl());
+                                    displayAvailableSizes();
+                                } else {
+                                    Log.e("ItemDetailActivity", "Product info is null in the response.");
+                                }
+                            } else {
+                                Log.e("ItemDetailActivity", "API call successful but response parsing failed.");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ProductInfoResponse> call, Throwable t) {
+                            Log.e("ItemDetailActivity", "API call failed: " + t.getMessage());
+                        }
+                    });
                 }
             }
 
             @Override
-            public void onFailure(Call<ProductInfoResponse> call, Throwable t) {
-                Log.e("ItemDetailActivity", "API call failed: " + t.getMessage());
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("ItemDetailActivity", "Database operation cancelled: " + databaseError.getMessage());
             }
         });
+    }
+
+
+
+
+    private void loadAndSetImage(String imageUrl) {
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            ImageView imageView = findViewById(R.id.image_placeholder);
+            RequestOptions requestOptions = new RequestOptions()
+                    .placeholder(R.color.gray) // Placeholder while loading
+                    .error(R.color.gray) // Placeholder if loading fails
+                    .diskCacheStrategy(DiskCacheStrategy.ALL); // Cache image
+            Glide.with(ItemDetailActivity.this)
+                    .load(imageUrl)
+                    .apply(requestOptions)
+                    .into(imageView);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP); // Set scale type to CENTER_CROP to fit the image as background
+            imageView.setAdjustViewBounds(true); // Adjust bounds to maintain aspect ratio
+            imageView.setPadding(16, 16, 16, 16); // Add padding around the image
+        } else {
+            Log.e("ItemDetailActivity", "Image URL is null or empty.");
+        }
     }
 
     private void displayAvailableSizes() {

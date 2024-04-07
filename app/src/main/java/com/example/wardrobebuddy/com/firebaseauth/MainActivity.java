@@ -89,6 +89,16 @@ public class MainActivity extends AppCompatActivity {
             loadUserItems();
         }
 
+        Button btnOutfitCollection = findViewById(R.id.btnOutfitCollection);
+        btnOutfitCollection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MyOutfitsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         Button btnScanNow = findViewById(R.id.btnScanNow);
         btnScanNow.setOnClickListener(new View.OnClickListener() {
             @Override
