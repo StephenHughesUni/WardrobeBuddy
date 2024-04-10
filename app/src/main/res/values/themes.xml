@@ -17,4 +17,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Other theme attributes -->
+        <item name="popupTheme">@style/AppTheme.PopupOverlay</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light">
+        <!-- Define popup overlay attributes here -->
+    </style>
+
+
 </resources>

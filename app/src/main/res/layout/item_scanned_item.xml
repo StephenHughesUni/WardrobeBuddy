@@ -26,12 +26,13 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="8dp"/>
 
-        <!-- New ImageView for the delete button -->
-        <ImageView
+
+
+        <ImageButton
             android:id="@+id/delete_icon"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:src="@drawable/baseline_favorite_border_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/actionOverflowButtonStyle"
             android:contentDescription="@string/delete_item"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -207,26 +207,37 @@ public class MainActivity extends AppCompatActivity {
                         // Temporary variables to hold each part
                         String brand = "", size = "", price = "", articleNumber = "";
 
+                        // Flags to check if brand or article code was found
+                        boolean brandFound = false, articleCodeFound = false;
+
                         // Iterate through each part to assign the values correctly based on a known identifier
                         for (String part : parts) {
                             if (part.startsWith("Brand:")) {
                                 brand = part.split(":")[1].trim(); // Adjusted to trim whitespace
+                                brandFound = true;
                             } else if (part.startsWith("Size:")) {
                                 size = part.split(":")[1].trim();
                             } else if (part.startsWith("Price:")) {
                                 price = part.split(":")[1].trim();
                             } else if (part.startsWith("Article Number:")) {
                                 articleNumber = part.split(":")[1].trim();
+                                articleCodeFound = true;
                             }
                         }
 
-                        String currentDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-                        String imageUriString = imageUri.toString();
-                        ScannedItem newItem = new ScannedItem(imageUriString, brand, size, price, articleNumber, currentDateTime, selectedCategory);
-                        saveItemToRealtimeDatabase(newItem, selectedCategory);
-                        Toast.makeText(MainActivity.this, "Item added to database", Toast.LENGTH_LONG).show();
+                        if (brandFound && articleCodeFound) {
+                            String currentDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+                            String imageUriString = imageUri.toString();
+                            ScannedItem newItem = new ScannedItem(imageUriString, brand, size, price, articleNumber, currentDateTime, selectedCategory);
+                            saveItemToRealtimeDatabase(newItem, selectedCategory);
+                            Toast.makeText(MainActivity.this, "Item added to database", Toast.LENGTH_LONG).show();
+                        } else {
+                            // Prompt user that it's not a proper image of a clothing tag
+                            Toast.makeText(MainActivity.this, "Either brand or article code not found", Toast.LENGTH_LONG).show();
+                        }
                     } else {
-                        Toast.makeText(MainActivity.this, "Failed to process image", Toast.LENGTH_SHORT).show();
+                        // Prompt user that it's not a proper image of a clothing tag
+                        Toast.makeText(MainActivity.this, "Item is not a clothing tag", Toast.LENGTH_LONG).show();
                     }
                 });
             }).start();

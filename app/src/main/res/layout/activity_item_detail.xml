@@ -5,6 +5,22 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+    <!-- AppBarLayout with the Toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            app:titleTextColor="@color/white"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <!-- The ImageView is placed here to be below all other components but above the CoordinatorLayout's background -->
     <ImageView
         android:id="@+id/image_placeholder"
@@ -13,29 +29,14 @@
         android:scaleType="centerCrop"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <!-- AppBarLayout with the Toolbar -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Details Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
         android:layout_marginTop="200dp"
-        app:layout_anchor="@id/appbar">
+        app:layout_anchor="@id/toolbar">
 
         <!-- These IDs should match the IDs used in the ItemDetailActivity -->
         <TextView
@@ -44,7 +45,9 @@
             android:layout_height="wrap_content"
             android:text="Brand placeholder"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingTop="8dp" />
+            android:paddingTop="8dp"
+            android:clickable="true"
+            android:onClick="onBrandClicked" />
 
         <TextView
             android:id="@+id/detail_articleNumber"
@@ -52,7 +55,9 @@
             android:layout_height="wrap_content"
             android:text="Article number placeholder"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingTop="8dp" />
+            android:paddingTop="8dp"
+            android:clickable="true"
+            android:onClick="onArticleNumberClicked" />
 
         <TextView
             android:id="@+id/detail_price"
@@ -60,7 +65,9 @@
             android:layout_height="wrap_content"
             android:text="Price placeholder"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingTop="8dp" />
+            android:paddingTop="8dp"
+            android:clickable="true"
+            android:onClick="onPriceClicked" />
 
         <LinearLayout
             android:id="@+id/size_container"
@@ -81,7 +88,8 @@
             android:backgroundTint="@color/blanched_almond"
             android:text="Available Size"
             android:textColor="@android:color/black"
-            android:textColorHighlight="@color/black" />
+            android:textColorHighlight="@color/black"
+            android:onClick="onAvailableSizesClicked" />
 
         <Button
             android:id="@+id/button_check_in_store_availability"
@@ -90,12 +98,14 @@
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/blanched_almond"
             android:text="In-Store Info"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:onClick="onInStoreInfoClicked" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/location_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </LinearLayout>
