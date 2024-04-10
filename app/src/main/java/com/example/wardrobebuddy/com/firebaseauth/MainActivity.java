@@ -3,6 +3,7 @@ package com.example.wardrobebuddy.com.firebaseauth;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -15,11 +16,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.Manifest;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
     private String selectedCategory;
 
     // Request codes for camera permission and capturing an image (commented for future use)
-    // private static final int REQUEST_CAMERA_PERMISSION = 201;
-    // private static final int REQUEST_IMAGE_CAPTURE = 102;
+     private static final int REQUEST_CAMERA_PERMISSION = 201;
+     private static final int REQUEST_IMAGE_CAPTURE = 102;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,9 +121,30 @@ public class MainActivity extends AppCompatActivity {
         builder.setItems(categories, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Assign the selected category to the selectedCategory variable
                 selectedCategory = categories[which];
-                openGallery(selectedCategory);
+                showImageSourceDialog();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showImageSourceDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose Image Source");
+        String[] imageSources = {"Camera", "Gallery"};
+        builder.setItems(imageSources, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i == 0) {
+                    // User chose Camera
+                    // Check for camera permission and open the camera
+                    checkCameraPermission();
+                } else {
+                    // User chose Gallery
+                    openGallery(selectedCategory);
+                }
             }
         });
 
@@ -134,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Code to check camera permission and open the camera (commented for future use)
-    /*
     private void checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
@@ -161,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
-    */
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
