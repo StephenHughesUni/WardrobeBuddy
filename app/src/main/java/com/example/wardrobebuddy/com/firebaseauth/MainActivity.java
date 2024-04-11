@@ -75,6 +75,12 @@ public class MainActivity extends AppCompatActivity implements ScannedItemsAdapt
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Set the toolbar title icon programmatically
+        getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide the default title
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.logo_toolbar);
+
         scannedItems = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
