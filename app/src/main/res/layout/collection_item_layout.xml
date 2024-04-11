@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/productImageView"
+        app:layout_constraintBottom_toBottomOf="@id/productImageView" />
+
+    <ImageView
+        android:id="@+id/productImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/brandTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Brand Name"
+        app:layout_constraintStart_toEndOf="@id/productImageView"
+        app:layout_constraintTop_toTopOf="@id/productImageView" />
+
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Price"
+        app:layout_constraintStart_toEndOf="@id/productImageView"
+        app:layout_constraintTop_toBottomOf="@id/brandTextView" />
+
+    <TextView
+        android:id="@+id/sizeTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Size"
+        app:layout_constraintStart_toEndOf="@id/productImageView"
+        app:layout_constraintTop_toBottomOf="@id/priceTextView" />
+
+    <TextView
+        android:id="@+id/articleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Article"
+        app:layout_constraintStart_toEndOf="@id/productImageView"
+        app:layout_constraintTop_toBottomOf="@id/sizeTextView" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
