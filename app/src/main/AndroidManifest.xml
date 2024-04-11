@@ -30,9 +30,6 @@
         android:maxSdkVersion="32" />
 
 
-
-
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -54,16 +51,21 @@
                 android:value=""
                 />
         </activity>
+
         <activity
-            android:name=".LoginActivity"
+            android:name=".LandingActivity"
             android:theme="@style/Theme.Material3.Light.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
 
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/Theme.Material3.Light.NoActionBar"
+            android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -73,12 +75,6 @@
             android:name=".MyOutfitsActivity"
             android:theme="@style/Theme.Material3.Light.NoActionBar"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -86,8 +82,8 @@
 
         <activity
             android:name=".MainActivity"
+            android:theme="@style/Theme.Material3.Light.NoActionBar"
             android:exported="true">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -96,9 +92,6 @@
             android:name=".ItemDetailActivity"
             android:theme="@style/Theme.Material3.Light.NoActionBar"
             android:exported="false" />
-
-
-
 
     </application>
 

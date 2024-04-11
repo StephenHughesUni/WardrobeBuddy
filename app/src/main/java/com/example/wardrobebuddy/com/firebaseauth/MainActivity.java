@@ -52,7 +52,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ScannedItemsAdapter.OnItemDeleteClickListener {
 
     FirebaseAuth auth;
     FirebaseUser user;
@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         scannedItems = new ArrayList<>();
@@ -81,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ScannedItemsAdapter(this, scannedItems);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemDeleteClickListener(this);
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -271,6 +271,62 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void onItemDeleteClick(int position) {
+        ScannedItem itemToDelete = scannedItems.get(position);
+        deleteItemFromDatabase(itemToDelete, position);
+    }
+
+    private void deleteItemFromDatabase(ScannedItem item, int position) {
+        // Specify the Firebase database instance with URL
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app");
+        // Use the specified database instance to get a reference
+        DatabaseReference ref = database.getReference("users").child(user.getUid()).child("scannedItems");
+
+        // First, attempt to delete the ProductInfo with a callback to then delete the ScannedItem
+        deleteProductInfoFromDatabase(item.getArticleNumber().replace("/", "_"), new Runnable() {
+            @Override
+            public void run() {
+                // Once ProductInfo is successfully deleted, proceed to delete the ScannedItem
+                ref.orderByChild("dateTimeScanned").equalTo(item.getDateTimeScanned()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            snapshot.getRef().removeValue(); // Deletes the ScannedItem
+                            break; // Assuming dateTimeScanned is unique
+                        }
+
+                        // Update UI after deletion
+                        scannedItems.remove(position);
+                        adapter.notifyItemRemoved(position);
+                        Toast.makeText(MainActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("MainActivity", "Deletion cancelled", databaseError.toException());
+                    }
+                });
+            }
+        });
+    }
+
+    // Modified to include the database instance with URL in deleteProductInfoFromDatabase method
+    private void deleteProductInfoFromDatabase(String formattedArticleNumber, Runnable onSuccess) {
+        // Specify the Firebase database instance with URL
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app");
+        // Use the specified database instance to get a reference
+        DatabaseReference productInfoRef = database.getReference("users")
+                .child(user.getUid()).child("productInfo").child(formattedArticleNumber);
+
+        productInfoRef.removeValue()
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("MainActivity", "Product info deleted successfully");
+                    onSuccess.run(); // Callback to indicate successful deletion
+                })
+                .addOnFailureListener(e -> Log.e("MainActivity", "Error deleting product info", e));
+    }
 
 
     private void saveItemToRealtimeDatabase(ScannedItem item, String category) {

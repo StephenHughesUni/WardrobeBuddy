@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/landing_page_background">
+
+    <!-- Logo container -->
+    <FrameLayout
+        android:id="@+id/logo_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <!-- Adjust the margins to position each letter to overlap as in the original design -->
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/logo_letter_L"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/vector_l"
+        android:layout_marginStart="117dp"
+        android:layout_marginTop="57dp"
+        />
+
+    <ImageView
+        android:id="@+id/logo_letter_G"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="117dp"
+        android:layout_marginTop="155dp"
+        android:src="@drawable/vector_g" />
+
+    <ImageView
+        android:id="@+id/logo_letter_O2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="210dp"
+        android:layout_marginTop="183dp"
+        android:src="@drawable/vector_o2" />
+
+    <ImageView
+        android:id="@+id/logo_letter_O"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="199dp"
+        android:layout_marginTop="81dp"
+        android:src="@drawable/vector_o" />
+
+    <ImageView
+        android:id="@+id/explore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="381dp"
+        android:src="@drawable/explore__scan_and_get_fashion_" />
+
+    <ImageView
+        android:id="@+id/get_started"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="481dp"
+        android:src="@drawable/getstarted" />
+
+    <!-- Other views such as TextView and Button -->
+
+    <Button
+        android:id="@+id/button_get_started"
+        android:layout_width="241dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="481dp"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:focusable="true" />
+
+</FrameLayout>

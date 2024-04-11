@@ -221,7 +221,8 @@ public class ItemDetailActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app");
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        DatabaseReference ref = database.getReference("users").child(user.getUid()).child("productInfo").child(articleNumber);
+        String productNode = articleNumber.replaceAll("/", "_"); // Convert '/' to '_' for Firebase compatibility
+        DatabaseReference ref = database.getReference("users").child(user.getUid()).child("productInfo").child(productNode);
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -288,6 +289,7 @@ public class ItemDetailActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void loadAndSetImage(String imageUrl) {
         if (imageUrl != null && !imageUrl.isEmpty()) {
