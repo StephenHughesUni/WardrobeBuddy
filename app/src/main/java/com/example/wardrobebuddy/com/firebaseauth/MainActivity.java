@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements ScannedItemsAdapt
 
     private void deleteItemFromDatabase(ScannedItem item, int position) {
         // Specify the Firebase database instance with URL
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app");
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app/");
         // Use the specified database instance to get a reference
         DatabaseReference ref = database.getReference("users").child(user.getUid()).child("scannedItems");
 

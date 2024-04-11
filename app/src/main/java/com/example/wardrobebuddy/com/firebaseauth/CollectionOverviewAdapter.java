@@ -1,6 +1,7 @@
 package com.example.wardrobebuddy.com.firebaseauth;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,15 +52,30 @@ public class CollectionOverviewAdapter extends RecyclerView.Adapter<CollectionOv
         return collections != null ? collections.size() : 0;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView collectionNameTextView, itemCountTextView;
         ImageView collectionImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            // Initialize views
             collectionNameTextView = itemView.findViewById(R.id.collectionNameTextView);
-            itemCountTextView = itemView.findViewById(R.id.itemCountTextView); // Make sure you have this TextView in your XML
+            itemCountTextView = itemView.findViewById(R.id.itemCountTextView);
             collectionImageView = itemView.findViewById(R.id.collectionImageView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Collection clickedCollection = collections.get(position);
+                        Intent intent = new Intent(view.getContext(), CollectionDetailActivity.class);
+                        intent.putExtra("collectionName", clickedCollection.getName());
+                        view.getContext().startActivity(intent);
+                    }
+                }
+            });
         }
+
     }
 }

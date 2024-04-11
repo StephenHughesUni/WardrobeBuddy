@@ -102,6 +102,15 @@
             android:theme="@style/Theme.Material3.Light.NoActionBar"
             android:exported="false" />
 
+        <activity
+            android:name=".CollectionDetailActivity"
+            android:theme="@style/Theme.Material3.Light.NoActionBar"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
     </application>
 
 </manifest>
