@@ -1,18 +1,66 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#8025CE"
+        android:elevation="4dp"
+        app:titleTextColor="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/toolbar">
+
+        <ImageView
+            android:id="@+id/outfitIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/outfiticonvector"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="110dp"
+            />
+
+        <ImageView
+            android:id="@+id/MyOutfitsTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="-15dp"
+            android:src="@drawable/outfitstxt" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/collection_overview_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_below="@id/MyOutfitsTxt" />
+
+    </LinearLayout>
+
+
+    <ImageButton
+        android:id="@+id/button_visual"
+        android:layout_width="112dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/addingbutton"
+        android:background="@null" />
 
     <Button
         android:id="@+id/makeNewWardrobeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="99dp"
+        android:layout_height="69dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:alpha="0"
         android:text="Make new Wardrobe" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/collection_overview_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-</LinearLayout>
+</FrameLayout>

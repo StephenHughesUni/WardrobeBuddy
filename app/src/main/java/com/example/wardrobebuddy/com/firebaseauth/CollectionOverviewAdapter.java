@@ -5,11 +5,18 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 
 public class CollectionOverviewAdapter extends RecyclerView.Adapter<CollectionOverviewAdapter.ViewHolder> {
@@ -45,6 +52,29 @@ public class CollectionOverviewAdapter extends RecyclerView.Adapter<CollectionOv
         } else {
             // Load a default image or leave it blank
         }
+
+        // Set delete button listener
+        holder.deleteButton.setOnClickListener(v -> {
+            removeCollection(collection.getName(), position); // Assuming each collection has a unique ID for Firebase reference
+        });
+    }
+
+    private void removeCollection(String collectionId, int position) {
+        DatabaseReference ref = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("collections")
+                .child(collectionId);
+        ref.removeValue().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // Remove the item from the list and notify the adapter
+                collections.remove(position);
+                notifyItemRemoved(position);
+                Toast.makeText(context, "Collection deleted successfully", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "Failed to delete collection", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -56,12 +86,15 @@ public class CollectionOverviewAdapter extends RecyclerView.Adapter<CollectionOv
         TextView collectionNameTextView, itemCountTextView;
         ImageView collectionImageView;
 
+        ImageButton deleteButton;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // Initialize views
             collectionNameTextView = itemView.findViewById(R.id.collectionNameTextView);
             itemCountTextView = itemView.findViewById(R.id.itemCountTextView);
             collectionImageView = itemView.findViewById(R.id.collectionImageView);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
