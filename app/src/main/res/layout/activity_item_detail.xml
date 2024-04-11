@@ -110,17 +110,4 @@
 
     </LinearLayout>
 
-    <!-- FloatingActionButton -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_favorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:fabSize="normal"
-        app:srcCompat="@drawable/baseline_favorite_border_24"
-        app:tint="@android:color/white"
-        android:layout_gravity="end|bottom" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
