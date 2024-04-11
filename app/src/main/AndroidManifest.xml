@@ -88,6 +88,15 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <activity
+            android:name=".CollectionOverviewActivity"
+            android:theme="@style/Theme.Material3.Light.NoActionBar"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".ItemDetailActivity"
             android:theme="@style/Theme.Material3.Light.NoActionBar"

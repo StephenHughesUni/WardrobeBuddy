@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements ScannedItemsAdapt
         btnOutfitCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MyOutfitsActivity.class);
+                Intent intent = new Intent(MainActivity.this, CollectionOverviewActivity.class);
                 startActivity(intent);
             }
         });
