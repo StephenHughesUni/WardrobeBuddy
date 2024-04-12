@@ -6,7 +6,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +32,16 @@ public class ItemSelectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_select_layout);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false); // Hide the default title
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setLogo(R.drawable.logo_toolbar);
+        }
+
         recyclerView = findViewById(R.id.itemsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CollectionAdapter(this); // Ensure CollectionAdapter can handle selection logic
@@ -38,6 +50,7 @@ public class ItemSelectionActivity extends AppCompatActivity {
         addButton = findViewById(R.id.confirmAdditionButton);
         addButton.setOnClickListener(v -> addSelectedItemsToCollection());
     }
+
 
     private void addSelectedItemsToCollection() {
         List<CollectionItem> selectedItems = adapter.getSelectedItems(); // Ensure this method is implemented in CollectionAdapter

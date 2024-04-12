@@ -30,6 +30,7 @@
 
         <TextView
             android:id="@+id/itemArticleTextView"
+            android:fontFamily="@font/montsfont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -37,12 +38,14 @@
 
         <TextView
             android:id="@+id/itemSizeTextView"
+            android:fontFamily="@font/montsfont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/itemPriceTextView"
+            android:fontFamily="@font/montsfont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"

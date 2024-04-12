@@ -18,6 +18,7 @@
         android:id="@+id/collectionNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/montsfont"
         android:layout_margin="16dp"
         android:text="Collection Name"
         android:textSize="24sp"
@@ -40,6 +41,7 @@
     <TextView
         android:id="@+id/totalPriceTextView"
         android:layout_width="wrap_content"
+        android:fontFamily="@font/montsfont"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Total Price"

@@ -31,6 +31,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/montsfont"
             android:gravity="center"
             android:text="@string/wb"
             android:textSize="25sp"
@@ -41,6 +42,7 @@
         <TextView
             android:layout_width="195dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/montsfont"
             android:text="@string/user"
             android:textSize="16sp"
             android:layout_marginTop="10dp"
@@ -62,6 +64,7 @@
         <TextView
             android:layout_width="195dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/montsfont"
             android:text="@string/pass"
             android:textSize="16sp"
             android:layout_marginTop="10dp"
@@ -104,12 +107,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/montsfont"
                 android:text="@string/don_t_have_an_account"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/registerNow"
+                android:fontFamily="@font/montsfont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sign_up"

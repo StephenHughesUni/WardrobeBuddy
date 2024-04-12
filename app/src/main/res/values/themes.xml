@@ -20,6 +20,8 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Other theme attributes -->
         <item name="popupTheme">@style/AppTheme.PopupOverlay</item>
+        <!-- Custom font family -->
+        <item name="android:fontFamily">@font/montserratregular</item>
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light">

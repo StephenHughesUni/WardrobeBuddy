@@ -13,7 +13,8 @@
         android:layout_height="?attr/actionBarSize"
         android:background="#8025CE"
         android:elevation="4dp"
-        app:titleTextColor="@color/white"/>
+        app:titleTextColor="@color/white"
+        android:fontFamily="@font/montserratregular"/>
 
     <!-- Spacer View -->
     <View

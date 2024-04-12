@@ -28,6 +28,7 @@
 
     <TextView
         android:id="@+id/brandTextView"
+        android:fontFamily="@font/montsfont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -37,6 +38,7 @@
 
     <TextView
         android:id="@+id/priceTextView"
+        android:fontFamily="@font/montsfont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -46,6 +48,7 @@
 
     <TextView
         android:id="@+id/sizeTextView"
+        android:fontFamily="@font/montsfont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -55,6 +58,7 @@
 
     <TextView
         android:id="@+id/articleTextView"
+        android:fontFamily="@font/montsfont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

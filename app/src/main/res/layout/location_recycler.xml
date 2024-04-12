@@ -19,6 +19,7 @@
 
         <TextView
             android:id="@+id/location_area"
+            android:fontFamily="@font/montsfont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -26,6 +27,7 @@
 
         <TextView
             android:id="@+id/location_title"
+            android:fontFamily="@font/montsfont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -33,6 +35,7 @@
 
         <TextView
             android:id="@+id/location_message"
+            android:fontFamily="@font/montsfont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"

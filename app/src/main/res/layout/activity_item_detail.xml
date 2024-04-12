@@ -43,6 +43,7 @@
             android:id="@+id/detail_brand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/montsfont"
             android:text="Brand placeholder"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:paddingTop="8dp"
@@ -53,6 +54,7 @@
             android:id="@+id/detail_articleNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/montsfont"
             android:text="Article number placeholder"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:paddingTop="8dp"
@@ -62,6 +64,7 @@
         <TextView
             android:id="@+id/detail_price"
             android:layout_width="wrap_content"
+            android:fontFamily="@font/montsfont"
             android:layout_height="wrap_content"
             android:text="Price placeholder"
             android:textAppearance="?android:attr/textAppearanceMedium"
