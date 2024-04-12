@@ -33,6 +33,8 @@ public class CollectionDetailActivity extends AppCompatActivity {
     private TextView collectionNameTextView;
     private TextView totalPriceTextView;
 
+    private double currentTotalPrice = 0.0; // Initialize with the default value
+
     private String collectionName; // The collection name
     private FirebaseAuth auth; // Firebase authentication instance
 
@@ -124,11 +126,12 @@ public class CollectionDetailActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     CollectionItem item = snapshot.getValue(CollectionItem.class);
                     if (item != null) {
+                        item.setKey(snapshot.getKey());  // Set the key here from the snapshot
                         itemsList.add(item);
                         total += parsePrice(item.getPrice());
                     }
                 }
-                adapter = new ItemsAdapter(CollectionDetailActivity.this, itemsList);
+                adapter = new ItemsAdapter(CollectionDetailActivity.this, itemsList, collectionName, total, totalPriceTextView);
                 recyclerView.setAdapter(adapter);
 
                 String totalFormatted = String.format("Total Price: €%.2f", total);

@@ -7,7 +7,7 @@ public class CollectionItem {
     private boolean isSelected; // Default should be false
     private String brand; // Field to store the brand name
     private String articleNumber;
-
+    private String key; // Add this line
     private String dateTimeScanned; // Field to store the scan date/time
 
     private String category; // New field for category
@@ -100,5 +100,13 @@ public class CollectionItem {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+    // Add getter and setter for key
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

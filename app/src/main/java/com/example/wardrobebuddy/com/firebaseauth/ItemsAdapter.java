@@ -1,23 +1,35 @@
 package com.example.wardrobebuddy.com.firebaseauth;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> {
     private Context context;
-    private List<CollectionItem> items; // Your CollectionItem model
+    private List<CollectionItem> items;
+    private String collectionName;
+    private TextView totalPriceTextView;
+    private double currentTotalPrice;
 
-    public ItemsAdapter(Context context, List<CollectionItem> items) {
+    public ItemsAdapter(Context context, List<CollectionItem> items, String collectionName, double currentTotalPrice, TextView totalPriceTextView) {
         this.context = context;
         this.items = items;
+        this.collectionName = collectionName;
+        this.totalPriceTextView = totalPriceTextView;
+        this.currentTotalPrice = currentTotalPrice;
     }
 
     @NonNull
@@ -25,6 +37,50 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_collection_detail, parent, false);
         return new ItemViewHolder(view);
+    }
+
+    public void removeItemFromCollection(CollectionItem item, int position) {
+        if (item.getKey() == null) {
+            Log.e("ItemsAdapter", "Key is null, can't remove item");
+            return;
+        }
+
+        DatabaseReference itemRef = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("collections")
+                .child(collectionName)
+                .child("items")
+                .child(item.getKey());
+
+        itemRef.removeValue().addOnSuccessListener(aVoid -> {
+            double priceOfRemovedItem = parsePrice(item.getPrice());
+            items.remove(position);
+            notifyItemRemoved(position);
+            updateTotalPrice(currentTotalPrice, -priceOfRemovedItem);
+        }).addOnFailureListener(e -> {
+            Log.e("ItemsAdapter", "Failed to remove item: ", e);
+        });
+    }
+
+    private void updateTotalPrice(double currentTotalPrice, double priceChange) {
+        currentTotalPrice += priceChange;
+        totalPriceTextView.setText(String.format("Total Price: €%.2f", currentTotalPrice));
+    }
+
+
+    private double parsePrice(String priceStr) {
+        try {
+            return Double.parseDouble(priceStr.replaceAll("[^\\d.]", ""));
+        } catch (NumberFormatException e) {
+            Log.e("ItemsAdapter", "Failed to parse price: ", e);
+            return 0.0;
+        }
+    }
+
+    private void updateTotalPrice(double priceChange) {
+        currentTotalPrice += priceChange;
+        totalPriceTextView.setText(String.format("Total Price: €%.2f", currentTotalPrice));
     }
 
     @Override
@@ -42,6 +98,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
         // Set the price
         holder.itemPriceTextView.setText("Price: " + item.getPrice());
+
+        holder.deleteItemButton.setOnClickListener(v -> {
+            // Call method to handle deletion
+            removeItemFromCollection(item, position);
+    });
     }
 
     @Override
@@ -53,11 +114,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         ImageView itemImageView;
         TextView itemArticleTextView, itemPriceTextView;
 
+        ImageButton deleteItemButton;
+
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             itemImageView = itemView.findViewById(R.id.itemImageView);
             itemArticleTextView = itemView.findViewById(R.id.itemArticleTextView);
             itemPriceTextView = itemView.findViewById(R.id.itemPriceTextView);
+            deleteItemButton = itemView.findViewById(R.id.deleteItemButton);
         }
     }
 }
