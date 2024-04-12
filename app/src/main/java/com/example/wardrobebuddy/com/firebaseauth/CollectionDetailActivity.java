@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,8 @@ public class CollectionDetailActivity extends AppCompatActivity {
     private String collectionName; // The collection name
     private FirebaseAuth auth; // Firebase authentication instance
 
+    private Button addItemsButton;
+
     @SuppressLint("LongLogTag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +65,21 @@ public class CollectionDetailActivity extends AppCompatActivity {
 
         collectionNameTextView = findViewById(R.id.collectionNameTextView);
         totalPriceTextView = findViewById(R.id.totalPriceTextView);
+        addItemsButton = findViewById(R.id.addItemsButton);
 
         // Check for null to avoid runtime exceptions
-        if (collectionNameTextView != null && totalPriceTextView != null) {
+        if (collectionNameTextView != null && totalPriceTextView != null && addItemsButton != null) {
             collectionNameTextView.setText(collectionName); // Set the collection name
             fetchCollectionItems(); // Fetch the items for the collection
+
+            addItemsButton.setOnClickListener(v -> {
+                // Intent to start ItemSelectionActivity
+                Intent intent = new Intent(CollectionDetailActivity.this, ItemSelectionActivity.class);
+                intent.putExtra("collectionName", collectionName);
+                startActivity(intent);
+            });
         } else {
-            Log.e("CollectionDetailActivity", "TextViews not found in layout");
+            Log.e("CollectionDetailActivity", "One or more UI elements not found in layout");
         }
     }
 
@@ -131,6 +142,13 @@ public class CollectionDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchCollectionItems(); // Refetch collections to reflect any changes made while this activity was paused/inactive.
+    }
+
 
     @SuppressLint("LongLogTag")
     private double parsePrice(String priceStr) {

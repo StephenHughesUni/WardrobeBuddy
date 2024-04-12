@@ -79,6 +79,13 @@ public class CollectionOverviewActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        fetchCollections(); // Refetch collections to reflect any changes made while this activity was paused/inactive.
+    }
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 

@@ -18,6 +18,16 @@
             android:layout_height="200dp"
             android:scaleType="centerCrop" />
 
+        <ImageButton
+            android:id="@+id/deleteItemButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/delete_item"
+            android:src="@drawable/baseline_delete_24" />
+
         <TextView
             android:id="@+id/itemArticleTextView"
             android:layout_width="wrap_content"

@@ -163,6 +163,17 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         return items;
     }
 
+    public List<CollectionItem> getSelectedItems() {
+        List<CollectionItem> selectedItems = new ArrayList<>();
+        for (CollectionItem item : items) {
+            if (item.isSelected()) {
+                selectedItems.add(item);
+            }
+        }
+        return selectedItems;
+    }
+
+
     // To clear all selections
     public void clearSelections() {
         for (CollectionItem item : items) {
