@@ -56,8 +56,8 @@
 
     <Button
         android:id="@+id/makeNewWardrobeButton"
-        android:layout_width="99dp"
-        android:layout_height="69dp"
+        android:layout_width="79dp"
+        android:layout_height="50dp"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="16dp"
         android:alpha="0"

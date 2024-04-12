@@ -19,8 +19,9 @@ import java.util.List;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> {
     private Context context;
-    private List<CollectionItem> items;
-    private String collectionName;
+    private List<CollectionItem> items; // Your CollectionItem model
+
+    private String collectionName; // Add this line
     private TextView totalPriceTextView;
     private double currentTotalPrice;
 
@@ -28,8 +29,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         this.context = context;
         this.items = items;
         this.collectionName = collectionName;
-        this.totalPriceTextView = totalPriceTextView;
         this.currentTotalPrice = currentTotalPrice;
+        this.totalPriceTextView = totalPriceTextView;
     }
 
     @NonNull
@@ -57,17 +58,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
             double priceOfRemovedItem = parsePrice(item.getPrice());
             items.remove(position);
             notifyItemRemoved(position);
-            updateTotalPrice(currentTotalPrice, -priceOfRemovedItem);
+            updateTotalPrice(-priceOfRemovedItem);
         }).addOnFailureListener(e -> {
             Log.e("ItemsAdapter", "Failed to remove item: ", e);
         });
     }
-
-    private void updateTotalPrice(double currentTotalPrice, double priceChange) {
-        currentTotalPrice += priceChange;
-        totalPriceTextView.setText(String.format("Total Price: €%.2f", currentTotalPrice));
-    }
-
 
     private double parsePrice(String priceStr) {
         try {
@@ -102,7 +97,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         holder.deleteItemButton.setOnClickListener(v -> {
             // Call method to handle deletion
             removeItemFromCollection(item, position);
-    });
+        });
     }
 
     @Override

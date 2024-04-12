@@ -2,6 +2,7 @@ package com.example.wardrobebuddy.com.firebaseauth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +24,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CollectionOverviewActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -101,10 +104,9 @@ public class CollectionOverviewActivity extends AppCompatActivity {
     }
 
     private void fetchCollections() {
-        // Use the specified database instance with the correct URL
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference collectionsRef = database.getReference("users")
-                .child(auth.getCurrentUser().getUid()) // Use auth.getCurrentUser() to get the current user
+                .child(auth.getCurrentUser().getUid())
                 .child("collections");
 
         collectionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -112,8 +114,14 @@ public class CollectionOverviewActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 collectionList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Collection collection = snapshot.getValue(Collection.class);
-                    collectionList.add(collection);
+                    try {
+                        Collection collection = snapshot.getValue(Collection.class);
+                        if (collection != null) {
+                            collectionList.add(collection);
+                        }
+                    } catch (Exception e) {
+                        Log.e("CollectionOverview", "Error parsing collection", e);
+                    }
                 }
                 adapter = new CollectionOverviewAdapter(CollectionOverviewActivity.this, collectionList);
                 recyclerView.setAdapter(adapter);
@@ -121,8 +129,10 @@ public class CollectionOverviewActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle the error
+                Log.e("CollectionOverview", "Database error", databaseError.toException());
             }
         });
     }
+
 }
+
