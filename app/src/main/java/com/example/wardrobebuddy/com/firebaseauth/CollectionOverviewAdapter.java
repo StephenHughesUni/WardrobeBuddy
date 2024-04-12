@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -55,7 +56,7 @@ public class CollectionOverviewAdapter extends RecyclerView.Adapter<CollectionOv
 
         // Set delete button listener
         holder.deleteButton.setOnClickListener(v -> {
-            removeCollection(collection.getName(), position); // Assuming each collection has a unique ID for Firebase reference
+            removeCollection(collection.getName(), position); // Using getname as the unique ID
         });
     }
 

@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -131,7 +130,6 @@ public class ItemDetailActivity extends AppCompatActivity {
         displayUserEmail(menu); // Call to display user email
         return true;
     }
-
 
 
     @Override

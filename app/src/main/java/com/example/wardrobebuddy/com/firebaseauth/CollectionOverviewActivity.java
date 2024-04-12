@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -24,9 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CollectionOverviewActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -55,7 +52,7 @@ public class CollectionOverviewActivity extends AppCompatActivity {
         }
 
         recyclerView = findViewById(R.id.collection_overview_recyclerView);
-        makeNewWardrobeButton = findViewById(R.id.makeNewWardrobeButton); // Replace with actual button ID in your layout
+        makeNewWardrobeButton = findViewById(R.id.makeNewWardrobeButton);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         fetchCollections(); // This will fetch the collections and set the adapter
@@ -64,7 +61,7 @@ public class CollectionOverviewActivity extends AppCompatActivity {
         makeNewWardrobeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open a new page (replace MyOutfitsActivity.class with your desired activity)
+                // Open a new page (replace MyOutfitsActivity.class with the desired activity)
                 Intent intent = new Intent(CollectionOverviewActivity.this, MyOutfitsActivity.class);
                 startActivity(intent);
             }

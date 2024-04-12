@@ -1,7 +1,7 @@
 package com.example.wardrobebuddy.com.firebaseauth;
 
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 public class ProductInfo {
     private Map<String, Boolean> size_availability; // Use directly the Map for simplicity

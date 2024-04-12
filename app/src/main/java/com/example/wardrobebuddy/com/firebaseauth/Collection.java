@@ -11,8 +11,13 @@ public class Collection {
         // Firebase needs the no-arg constructor
     }
 
+    public Collection(String name) {
+        this.name = name;
+        this.items = new ArrayList<>();
+    }
+
     public String getFirstItemImageUrl() {
-        if(items != null && !items.isEmpty() && items.get(0).getProductImageUrl() != null) {
+        if (items != null && !items.isEmpty() && items.get(0).getProductImageUrl() != null) {
             return items.get(0).getProductImageUrl();
         }
         return null; // return a default image or null
@@ -20,11 +25,6 @@ public class Collection {
 
     public int getItemCount() {
         return items != null ? items.size() : 0;
-    }
-
-    public Collection(String name) {
-        this.name = name;
-        this.items = new ArrayList<>();
     }
 
     // Getters and setters
@@ -45,7 +45,7 @@ public class Collection {
     }
 
     public void addItem(CollectionItem item) {
-        if(this.items == null) {
+        if (this.items == null) {
             this.items = new ArrayList<>();
         }
         this.items.add(item);

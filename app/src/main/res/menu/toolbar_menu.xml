@@ -19,8 +19,8 @@
     <!-- Settings icon -->
     <item
         android:id="@+id/action_settings"
-        android:title="Settings"
         android:icon="@drawable/baseline_settings_24"
+        android:title="Settings"
         app:showAsAction="always">
         <menu>
             <item

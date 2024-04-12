@@ -16,8 +16,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="#8025CE"
             android:elevation="4dp"
-            app:titleTextColor="@color/white"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextColor="@color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -33,9 +33,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
         android:orientation="vertical"
         android:padding="16dp"
-        android:layout_marginTop="200dp"
         app:layout_anchor="@id/toolbar">
 
         <!-- These IDs should match the IDs used in the ItemDetailActivity -->
@@ -43,42 +43,42 @@
             android:id="@+id/detail_brand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montsfont"
-            android:text="Brand placeholder"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingTop="8dp"
             android:clickable="true"
-            android:onClick="onBrandClicked" />
+            android:fontFamily="@font/montsfont"
+            android:onClick="onBrandClicked"
+            android:paddingTop="8dp"
+            android:text="Brand placeholder"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/detail_articleNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montsfont"
-            android:text="Article number placeholder"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingTop="8dp"
             android:clickable="true"
-            android:onClick="onArticleNumberClicked" />
+            android:fontFamily="@font/montsfont"
+            android:onClick="onArticleNumberClicked"
+            android:paddingTop="8dp"
+            android:text="Article number placeholder"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/detail_price"
             android:layout_width="wrap_content"
-            android:fontFamily="@font/montsfont"
             android:layout_height="wrap_content"
-            android:text="Price placeholder"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingTop="8dp"
             android:clickable="true"
-            android:onClick="onPriceClicked" />
+            android:fontFamily="@font/montsfont"
+            android:onClick="onPriceClicked"
+            android:paddingTop="8dp"
+            android:text="Price placeholder"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <LinearLayout
             android:id="@+id/size_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:visibility="gone">
             <!-- Size boxes will be added dynamically here -->
         </LinearLayout>
@@ -89,10 +89,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/blanched_almond"
+            android:onClick="onAvailableSizesClicked"
             android:text="Available Size"
             android:textColor="@android:color/black"
-            android:textColorHighlight="@color/black"
-            android:onClick="onAvailableSizesClicked" />
+            android:textColorHighlight="@color/black" />
 
         <Button
             android:id="@+id/button_check_in_store_availability"
@@ -100,9 +100,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/blanched_almond"
+            android:onClick="onInStoreInfoClicked"
             android:text="In-Store Info"
-            android:textColor="@android:color/black"
-            android:onClick="onInStoreInfoClicked" />
+            android:textColor="@android:color/black" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/location_recycler_view"

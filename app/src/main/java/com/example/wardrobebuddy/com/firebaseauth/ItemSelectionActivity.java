@@ -19,7 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemSelectionActivity extends AppCompatActivity {
@@ -44,7 +43,7 @@ public class ItemSelectionActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.itemsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CollectionAdapter(this); // Ensure CollectionAdapter can handle selection logic
+        adapter = new CollectionAdapter(this);
         recyclerView.setAdapter(adapter);
 
         addButton = findViewById(R.id.confirmAdditionButton);
@@ -53,7 +52,7 @@ public class ItemSelectionActivity extends AppCompatActivity {
 
 
     private void addSelectedItemsToCollection() {
-        List<CollectionItem> selectedItems = adapter.getSelectedItems(); // Ensure this method is implemented in CollectionAdapter
+        List<CollectionItem> selectedItems = adapter.getSelectedItems();
         String collectionName = getIntent().getStringExtra("collectionName");
 
         // Get a reference to the collection

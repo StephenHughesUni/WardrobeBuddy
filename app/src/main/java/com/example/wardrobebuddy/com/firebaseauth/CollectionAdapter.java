@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +37,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         if (currentUser != null) {
             String userId = currentUser.getUid();
 
-            // Make sure you're using the correct region URL for your database
+            // Make sure you're using the correct region URL for the database if you intend to change
             FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app");
             scannedItemsReference = database.getReference().child("users").child(userId).child("scannedItems");
 
@@ -70,7 +73,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
     }
 
     private void fetchProductInfo(final String articleNumber, final int position) {
-        // Initialize the Firebase database instance with the correct region URL
+        // Make sure you're using the correct region URL for the database if you intend to change
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app");
 
         // Get the user ID from the FirebaseUser object
@@ -92,7 +95,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                     if (imageUrl != null && !imageUrl.isEmpty()) {
                         // Update the corresponding CollectionItem with this imageUrl
                         CollectionItem item = items.get(position);
-                        item.setProductImageUrl(imageUrl); // Make sure you have this setter in your CollectionItem class
+                        item.setProductImageUrl(imageUrl); // Make sure you have this setter in the CollectionItem class
                         notifyItemChanged(position); // Notify to update the item at this position
                     }
                 } else {
@@ -106,7 +109,6 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             }
         });
     }
-
 
 
     @NonNull
@@ -148,7 +150,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             notifyItemChanged(position); // Notify any registered observers that the item at position has changed.
         });
 
-        // Optionally, you might want to handle the item click to toggle the selection state as well
+        // Optionally,  might want to handle the item click to toggle the selection state as well
         holder.itemView.setOnClickListener(v -> {
             boolean isSelected = !item.isSelected();
             item.setSelected(isSelected); // Toggle the item's selected state

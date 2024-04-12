@@ -10,9 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/productImageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/productImageView"
-        app:layout_constraintBottom_toBottomOf="@id/productImageView" />
+        app:layout_constraintTop_toTopOf="@id/productImageView" />
 
     <ImageView
         android:id="@+id/productImageView"
@@ -28,40 +28,40 @@
 
     <TextView
         android:id="@+id/brandTextView"
-        android:fontFamily="@font/montsfont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:fontFamily="@font/montsfont"
         android:text="Brand Name"
         app:layout_constraintStart_toEndOf="@id/productImageView"
         app:layout_constraintTop_toTopOf="@id/productImageView" />
 
     <TextView
         android:id="@+id/priceTextView"
-        android:fontFamily="@font/montsfont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:fontFamily="@font/montsfont"
         android:text="Price"
         app:layout_constraintStart_toEndOf="@id/productImageView"
         app:layout_constraintTop_toBottomOf="@id/brandTextView" />
 
     <TextView
         android:id="@+id/sizeTextView"
-        android:fontFamily="@font/montsfont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:fontFamily="@font/montsfont"
         android:text="Size"
         app:layout_constraintStart_toEndOf="@id/productImageView"
         app:layout_constraintTop_toBottomOf="@id/priceTextView" />
 
     <TextView
         android:id="@+id/articleTextView"
-        android:fontFamily="@font/montsfont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:fontFamily="@font/montsfont"
         android:text="Article"
         app:layout_constraintStart_toEndOf="@id/productImageView"
         app:layout_constraintTop_toBottomOf="@id/sizeTextView" />

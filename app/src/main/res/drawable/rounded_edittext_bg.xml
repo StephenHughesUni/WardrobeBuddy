@@ -3,6 +3,6 @@
     <solid android:color="#FFFFFF" /> <!-- Background color -->
     <corners android:radius="100dp" /> <!-- Adjust the radius to control the roundness of corners -->
     <stroke
-        android:color="#CCCCCC"
-    android:width="1dp" />
+        android:width="1dp"
+        android:color="#CCCCCC" />
 </shape>

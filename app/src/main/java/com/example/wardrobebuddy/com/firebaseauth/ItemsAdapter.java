@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -19,9 +21,9 @@ import java.util.List;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> {
     private Context context;
-    private List<CollectionItem> items; // Your CollectionItem model
+    private List<CollectionItem> items;
 
-    private String collectionName; // Add this line
+    private String collectionName;
     private TextView totalPriceTextView;
     private double currentTotalPrice;
 

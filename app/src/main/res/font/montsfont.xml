@@ -1,5 +1,11 @@
 <font-family xmlns:app="http://schemas.android.com/apk/res-auto">
-    <font app:fontStyle="normal" app:fontWeight="400" app:font="@font/montserratregular" />
-    <font app:fontStyle="italic" app:fontWeight="400" app:font="@font/montserratitalic" />
+    <font
+        app:font="@font/montserratregular"
+        app:fontStyle="normal"
+        app:fontWeight="400" />
+    <font
+        app:font="@font/montserratitalic"
+        app:fontStyle="italic"
+        app:fontWeight="400" />
     <!-- Add other styles if available -->
 </font-family>

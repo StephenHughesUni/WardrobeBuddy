@@ -8,14 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 
 public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapter.ViewHolder> {
@@ -24,10 +27,6 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
     private OnItemDeleteClickListener deleteClickListener;
     private FirebaseUser user;
     private DatabaseReference databaseReference;
-
-    public interface OnItemDeleteClickListener {
-        void onItemDeleteClick(int position);
-    }
 
     public ScannedItemsAdapter(Context context, List<ScannedItem> scannedItems) {
         this.context = context;
@@ -103,6 +102,10 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
     @Override
     public int getItemCount() {
         return scannedItems.size();
+    }
+
+    public interface OnItemDeleteClickListener {
+        void onItemDeleteClick(int position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

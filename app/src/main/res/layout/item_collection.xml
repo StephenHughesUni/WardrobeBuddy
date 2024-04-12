@@ -7,10 +7,10 @@
 
     <TextView
         android:id="@+id/itemName"
-        android:fontFamily="@font/montsfont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"/>
+        android:fontFamily="@font/montsfont"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
 
 </LinearLayout>

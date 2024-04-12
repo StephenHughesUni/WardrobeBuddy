@@ -1,12 +1,12 @@
 package com.example.wardrobebuddy.com.firebaseauth;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,8 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import android.Manifest;
-
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -26,7 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,20 +53,17 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements ScannedItemsAdapter.OnItemDeleteClickListener {
 
-    FirebaseAuth auth;
-    FirebaseUser user;
-
     // Request code for selecting an image from the gallery
     private static final int PICK_IMAGE_REQUEST = 104;
+    // Request codes for camera permission and capturing an image
+    private static final int REQUEST_CAMERA_PERMISSION = 201;
+    private static final int REQUEST_IMAGE_CAPTURE = 102;
+    FirebaseAuth auth;
+    FirebaseUser user;
     private RecyclerView recyclerView;
     private ScannedItemsAdapter adapter;
     private List<ScannedItem> scannedItems;
-
     private String selectedCategory;
-
-    // Request codes for camera permission and capturing an image (commented for future use)
-     private static final int REQUEST_CAMERA_PERMISSION = 201;
-     private static final int REQUEST_IMAGE_CAPTURE = 102;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements ScannedItemsAdapt
             processImage(selectedImageUri);
         }
     }
+
     private String encodeImageToBase64(Uri imageUri) {
         try {
             InputStream imageStream = getContentResolver().openInputStream(imageUri);
@@ -224,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements ScannedItemsAdapt
             new Thread(() -> {
                 OpenAiHelper openAIHelper = new OpenAiHelper();
                 String prompt = "Analyze the clothing label image and identify the specific details listed below. The extracted information must be presented in the exact order and format as follows: 'Brand: [brand]', 'Size: [size]', 'Price: [price] EUR', 'Article Number: [article number]'. Use these guidelines very strictly:\n" +
-                        "First please search for popular clothing tags online even if its old content and examine any information on the structure of them such as COS, ZARA, H&M. Example being GB will be on H&M labels while DX is on COS labels. COS usually also contains COS.com on the label sideways"+
+                        "First please search for popular clothing tags online even if its old content and examine any information on the structure of them such as COS, ZARA, H&M. Example being GB will be on H&M labels while DX is on COS labels. COS usually also contains COS.com on the label sideways" +
                         "- Size: Determine the size that is prominently displayed on the label, which could be in bold, larger print, or within a box. Provide only this size.\n" +
                         "- Price: Locate the price in euros. Absent a clear indication of a sale, such as a sale sticker or strikethrough, list only the current euro price.\n" +
                         "- Article Number: Different brands have unique article number formats. For H&M, this is '1234567 003' which is 7 numbers a space and three colour code numbers '1234567 001', strictly only 7 digits then space then three digits. For Zara, it looks like '2398/028/800', with 4 digits a / then 3 digits / then 3 more digits for colour code in total 10 digits. Use these formats to identify the article number also remember the structure of each to determine the brand.\n" +
@@ -320,7 +315,6 @@ public class MainActivity extends AppCompatActivity implements ScannedItemsAdapt
         });
     }
 
-    // Modified to include the database instance with URL in deleteProductInfoFromDatabase method
     private void deleteProductInfoFromDatabase(String formattedArticleNumber, Runnable onSuccess) {
         // Specify the Firebase database instance with URL
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://finalyearprojectapp-29b81-default-rtdb.europe-west1.firebasedatabase.app");
@@ -380,8 +374,6 @@ public class MainActivity extends AppCompatActivity implements ScannedItemsAdapt
             }
         });
     }
-
-
 
 
     private String convertTextToJson(Text texts) {

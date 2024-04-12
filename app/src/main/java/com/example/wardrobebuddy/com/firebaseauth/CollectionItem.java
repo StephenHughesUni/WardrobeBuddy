@@ -101,6 +101,7 @@ public class CollectionItem {
     public void setSelected(boolean selected) {
         isSelected = selected;
     }
+
     // Add getter and setter for key
     public String getKey() {
         return key;
