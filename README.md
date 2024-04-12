@@ -48,7 +48,9 @@ Retrofit retrofit = new Retrofit.Builder()
 2. Open the project in Android Studio.
 3. Ensure Firebase is configured with your project details.
 4. Update the `API_KEY` in `OpenAiHelper` and the base URL in `Retrofit` setup per your deployment.
-5. Build and run the application.
+5. Run the code inside WardrobeBuddy_Scrape_server using the command `uvicorn endpoint:app --reload` to run it locally, however, there is a EC2 server running this code but as this server has limited FREE user resources PLEASE DO NOT use it. ```java
+.baseUrl("http://3.253.82.87:80")```.
+7. Build and run the application.
 
 ## Dependencies
 - Firebase Auth and Database
