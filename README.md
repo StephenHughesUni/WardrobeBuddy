@@ -1,5 +1,6 @@
 
 # WardrobeBuddy Android App
+My university project in which I got a first class honors.
 
 ## Overview
 WardrobeBuddy is an Android application designed to manage and analyze your wardrobe effectively. This app leverages Firebase for user authentication and database services, uses Machine Learning (ML Kit and OpenAI) to process and categorize clothing items, and interacts with a custom backend service hosted on AWS EC2 for product information retrieval.
