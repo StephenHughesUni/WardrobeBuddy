@@ -15,7 +15,7 @@ import okhttp3.Response;
 
 public class OpenAiHelper {
     private static final String OPENAI_URL = "https://api.openai.com/v1/chat/completions"; // Use the chat completions endpoint
-    private static final String API_KEY = "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"; // Replace with your actual OpenAI API Key
+    private static final String API_KEY = ""; // Replace with your actual OpenAI API Key
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     private final OkHttpClient client = new OkHttpClient();
