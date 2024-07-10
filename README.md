@@ -66,3 +66,8 @@ Feel free to fork this repository and contribute by submitting pull requests. En
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
+
+![image](https://github.com/StephenHughesUni/WardrobeBuddy/assets/74723672/d9a81b64-5bb7-4697-9132-8ce663c6e8f6)
+![image](https://github.com/StephenHughesUni/WardrobeBuddy/assets/74723672/769582af-d24c-44cd-8d9e-aad6f174a697)
+![image](https://github.com/StephenHughesUni/WardrobeBuddy/assets/74723672/da1e7fa6-c7e1-467f-9e20-547391933718)
+
